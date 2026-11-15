@@ -1,0 +1,6 @@
+interface:
+  display_name: "黎雅AI自媒体封面"
+  short_description: "制作3:4或9:16封面及三平台发布文案"
+  default_prompt: "使用 $liya-ai-cover，根据本期脚本和可选人物照制作封面，并给出抖音、小红书和视频号发布文案。"
+policy:
+  allow_implicit_invocation: true

@@ -16,6 +16,8 @@ THEMES = {
 SRT_TIME = re.compile(r"(\d+):(\d\d):(\d\d)[,.](\d{3})")
 
 
+from motion_clips import prepare_clips, video_graph
+
 def ffprobe(path):
     return json.loads(subprocess.check_output([
         "ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)
@@ -259,6 +261,11 @@ def main():
         if not cues:
             parser.error("No speech cues found. Check the audio or provide synchronized subtitles.")
         events = plan_events(cues,duration)
+    motion = plan.get("motion", []) if args.plan else []
+    try:
+        clips = prepare_clips(motion, args.plan.absolute().parent, duration, width, height) if motion else []
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        parser.error(str(exc))
     for item in [*cues,*events]:
         start,end = item["start"],item["end"]
         if not (0 <= start < end <= duration+.12) or not str(item.get("text","")).strip():
@@ -268,7 +275,8 @@ def main():
             parser.error(f"Unsupported event: {event['kind']}")
     theme = auto_theme(source) if args.theme=="auto" else args.theme
     out.mkdir(parents=True,exist_ok=True)
-    (out/"timeline.json").write_text(json.dumps({"theme":theme,"captions":cues,"events":events},
+    saved_motion = [{**item, "path": str(clip[0])} for item, clip in zip(motion, clips)]
+    (out/"timeline.json").write_text(json.dumps({"theme":theme,"captions":cues,"events":events,"motion":saved_motion},
                                                 ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     (out/"captions.srt").write_text("\n\n".join(
         f"{i}\n{timecode(c['start'])} --> {timecode(c['end'])}\n{c['text']}" for i,c in enumerate(cues,1)
@@ -279,15 +287,27 @@ def main():
         return
     starts = [e["start"] for e in events if e.get("sfx") and not args.silent_effects]
     cmd = ["ffmpeg","-v","error","-y","-i",str(source)]
+    graph = []
     if starts:
         write_effects(out/"effects.wav",starts,duration)
-        cmd += ["-i","effects.wav","-filter_complex",
-                "[0:a:0][1:a:0]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.98:level=0:latency=1[a]",
-                "-map","[a]","-c:a","aac","-b:a","192k"]
+        cmd += ["-i","effects.wav"]
+        graph.append("[0:a:0][1:a:0]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.98:level=0:latency=1[a]")
+        audio_options = ["-map","[a]","-c:a","aac","-b:a","192k"]
     else:
-        cmd += ["-map","0:a:0","-c:a","copy" if audio["codec_name"] in {"aac","mp3","alac"} else "aac"]
-    cmd += ["-map",f"0:{picture['index']}","-vf","pad=ceil(iw/2)*2:ceil(ih/2)*2,ass=graphics.ass",
-            "-c:v","libx264","-preset","fast","-crf","17","-pix_fmt","yuv420p","-movflags","+faststart",str(temp)]
+        audio_options = ["-map","0:a:0","-c:a","copy" if audio["codec_name"] in {"aac","mp3","alac"} else "aac"]
+    for path, *_ in clips:
+        cmd += ["-i",str(path)]
+    if clips:
+        graph.append(video_graph(picture["index"], clips, 2 if starts else 1))
+        video_options = ["-map","[v]"]
+    else:
+        video_options = ["-map",f"0:{picture['index']}","-vf",
+                         "pad=ceil(iw/2)*2:ceil(ih/2)*2,ass=graphics.ass"]
+    if graph:
+        cmd += ["-filter_complex_threads","2","-filter_complex",";".join(graph)]
+    cmd += audio_options + video_options + [
+        "-c:v","libx264","-preset","fast","-crf","17","-pix_fmt","yuv420p",
+        "-movflags","+faststart",str(temp)]
     subprocess.run(cmd,cwd=out,check=True)
     subprocess.run(["ffmpeg","-v","error","-xerror","-i",str(temp),"-f","null","-"],check=True)
     temp.replace(final)

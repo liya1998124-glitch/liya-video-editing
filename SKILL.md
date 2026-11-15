@@ -1,16 +1,17 @@
 ---
 name: liya-talking-head-packaging
-description: Turn a supplied talking-head video into a finished packaged edit with synchronized captions, bright or dark typography, motion graphics, illustrative visuals, and sound accents. Use for 口播包装、亮色包装、深色包装 or when a creator supplies only a video and asks for an end-to-end edit.
+description: Package talking-head videos and local assets into a finished edit with synchronized captions, original motion graphics, callouts and sound accents. Use for 口播剪辑包装、一键剪辑包装、自动剪辑、作品胶片 or a request to turn a folder of assets into a finished video.
 ---
 
 # Liya 口播包装
 
-用户提供一条可读、有口播的本地视频即可开始。脚本、字幕、补充录屏和风格偏好均可选。默认保留口播、剪口、语速和画幅，输出新文件。用户要求全自动时，直接完成转写、画面设计、合成和验收；预览是制作中的检查点。用户明确要求先看样片时，按其节奏交付。
+收到一条口播视频或一个素材目录即可开始。默认保留口播、语速和画幅，输出新文件。先读[一键剪辑包装流程](references/autonomous-edit.md)，按完整成片交付。用户指定先看样片时，按指定阶段交付。
 
-1. 探测源尺寸、音轨、字幕和现有贴字，抽帧看人物、手势、留白和画面方向。用用户字幕、文件内可用字幕或当前可用的本地转写，核对专有名词和时间轴。仅提供视频时可用下方脚本完成转写和基础包装。
-2. 以口播为线索安排开场、章节、概念、操作、结果和收尾。能用短标签说清的用短标签，流程用分步动效，产品用有权使用的真实画面或明确标示的示意。工具入口、数值和实际生成结果须可验证；原录直接裁放，关键字局部放大。
-3. 风格默认 auto。按明确指定、同项目偏好、实拍对比度依次选亮色或深色。没有偏好时从样帧确定对比度，先保留源视频的自然颜色。按[视觉与声音](references/design.md)做标题、词条、画中画和片尾。基础渲染能做字幕、标题、章节、逐字词条和短音效；需要角色、插画或真实录屏时，补做素材并实际放回成片。
-4. 用 [运行说明](references/run.md)里的命令制作可改的时间轴、ASS/SRT 和 MP4。可先生成时间轴再按语义修订，也可以从视频直接运行。已有烧录字幕时先检查位置，避免双层字幕。音效按实际动效低音量混入，明确要求无声或保留音轨原样时关掉音效。
-5. 检查最终导出的视频、口播、字幕、特效和操作指向。至少看开头、最密段、真实演示和收尾。检查裁切、手机可读性、口播与图形同步、全片解码和音轨。交付成片、字幕、可修改时间轴与生成素材。根据当前工具能力交付剪辑软件工程，标明真实打开验证范围。
+1. 盘点用户指定范围内的素材，识别主口播，抽帧并转写。用实际语音落点安排找素材、找内容、动画、剪辑、字幕、词条、音效和收尾。有脚本优先用脚本校对，未提供时先转写。
+2. 主动寻找匹配的素材并制作会动的画面。按口播安排真人、动态胶片、独立图解、真实录屏或带标识的原创示意。复杂镜头先单独渲染。按[镜头设计](references/shot-design.md)检查前五秒、真实播放与词条避让。用[动效指南](references/motion-workflow.md)安排胶片、时间线、包装前后变化和片尾。
+3. 按[视觉与声音](references/design.md)选主题、构图和音效。用户偏好优先，默认依据实拍对比度选主题。保留真人和原素材的比例。产品功能、数据及案例归属以证据为准。
+4. 按[运行说明](references/run.md)把独立动画和实录挂入时间轴，渲染成片，逐个检查字幕、词条、动效和音效。至少复查开头、最密段、证据镜头和收尾，验证整片解码。交付 MP4、独立字幕、时间轴和动效源码或素材。编辑器工程随当前能力交付并说明实测范围。
 
-对受限素材使用原创图形、授权素材或公开可合法再分发的资产，保留所需许可。公开包只含通用实现、文档和自制示例。
+公开包只含通用实现与说明。每个创作者使用自己的素材、工具和目录。
+
+首次使用看[使用说明](使用说明.md)。
