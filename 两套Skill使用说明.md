@@ -2,9 +2,39 @@
 
 这份说明适合做口播短视频的创作者。先把原片剪辑包装成成片，再用同一份定稿脚本做封面和三平台发布文案。只做其中一步时，单独调用对应的 Skill 即可。
 
-## 安装
+## 先安装 Skill
 
-把所需 ZIP 解压成完整的 Skill 文件夹。请你的 Agent 把它放进当前工具的 Skills 目录，或直接在聊天里要求它读取该文件夹的 `SKILL.md`。保留文件夹内的说明、脚本和 references。需要时重开对话再调用。剪辑要有可用的解码、转写和渲染工具，生成封面要有相应的生图或本地排版能力。
+从网盘下载所需 ZIP。剪视频选 `liya-talking-head-packaging.zip`，做封面和发布文案选 `liya-ai-cover.zip`。两个可以只装一个，也可以分别安装。
+
+**Codex**
+
+> Codex，帮我安装这份 Skill ZIP。我会把文件发给你，或告诉你它的位置。请解压并保留整个 Skill 文件夹，放进当前项目的 Skills 目录。装好后告诉我安装位置、Skill 名称和怎么调用，先不用开始剪片或做封面。
+
+在项目里使用时，可以放到 `.agents/skills/<Skill名>/`，确认里面能直接看到 `SKILL.md`。安装后新开一个对话，按名称调用。
+
+**WorkBuddy**
+
+> WorkBuddy，我要安装这份本地 Skill ZIP。请告诉我怎么通过「上传技能」导入。导入后帮我确认能不能按 Skill 名称调用。
+
+在桌面端进入「专家·技能·连接器 → 技能 → 添加技能 → 上传技能」，选择下载的 ZIP。对话安装主要针对技能市场，网盘 ZIP 走本地上传。上传后到「已安装」确认已启用。 [WorkBuddy 官方安装说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)
+
+**Claude**
+
+> Claude，帮我把这个 Skill 安装到我现在用的 Claude。我要装的是这份 ZIP。请告诉我该用上传入口还是项目目录，完成后给我一句调用示例。
+
+- **Claude 网页或桌面聊天**。启用代码执行后，进入「自定义（Customize）→ Skills」，选择上传自定义 Skill，再逐个上传 ZIP。 [Claude 官方上传说明](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+- **Claude Code 项目**。请 Claude Code 解压 ZIP，把完整 Skill 文件夹放进 `.claude/skills/<Skill名>/`。用 `/liya-talking-head-packaging` 或 `/liya-ai-cover` 调用。 [Claude Code Skill 说明](https://support.claude.com/en/articles/14554922-claude-code-user-faq)
+
+装完先问一句「请确认已加载这个 Skill，告诉我第一步要提供什么」。剪辑仍需当前环境能读取素材并运行转写和渲染。封面仍需可用的图像生成或排版工具。剪映工程还取决于编辑器的连接情况。
+
+## GitHub 源码和说明
+
+- [黎雅自媒体制作 Skills 仓库](https://github.com/liya1998124-glitch/liya-video-editing)
+- [一键剪辑包装 Skill](https://github.com/liya1998124-glitch/liya-video-editing/blob/main/SKILL.md)，入口在仓库根目录。
+- [一键封面和三平台发布文案 Skill](https://github.com/liya1998124-glitch/liya-video-editing/tree/main/skills/liya-ai-cover)，单独取 `skills/liya-ai-cover` 文件夹。
+- [两套 Skill 在线使用说明](https://github.com/liya1998124-glitch/liya-video-editing/blob/main/%E4%B8%A4%E5%A5%97Skill%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md)
+
+直接从 GitHub 取源码时，按上面两个位置选取 Skill。上传平台时用对应的单独 ZIP，每个 ZIP 内的第一层是该 Skill 文件夹。
 
 ## 第一步 交给一键剪辑包装 Skill
 
